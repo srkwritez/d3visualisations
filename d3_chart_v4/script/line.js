@@ -25,7 +25,23 @@ var svg = d3.select("#line_chart").append("svg")
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
-//this is a sample change
+
+    //adding lable for x-axis
+     svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height - 6)
+    .text(" Year (interval of a decade) ");
+    //adding lable for y-axis
+    svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 6)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("Popularity");
+
 var dataYear = function (d) {
     return +d.Year;
 };
@@ -33,6 +49,8 @@ var new_data = [[], []];
 
 var focus = svg.append("g")
     .style("display", "none");
+
+    
 
 // Get the data
 d3.csv("data/a1-film.csv", function(error, data) {
@@ -91,6 +109,7 @@ d3.csv("data/a1-film.csv", function(error, data) {
     // Add the valueline path.
     var color = ["steelblue", "red"];
     var name = ["movies", "average popularity"];
+    
 
     for (var i = 0; i < 2; i++) {
         svg.append("path")
@@ -118,5 +137,12 @@ d3.csv("data/a1-film.csv", function(error, data) {
     // Add the Y Axis
     svg.append("g")
         .call(d3.axisLeft(y));
-
+// add the Y gridlines
+        svg.append("g")			
+        .attr("class", "grid")
+        .call(d3.axisLeft(y)
+        	.tickSize(-width)
+          .tickFormat("")
+          .ticks(6)
+        );
 });
