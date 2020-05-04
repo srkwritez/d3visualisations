@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>DSBA5122 d3 example</title>
+    <script src="//d3js.org/d3.v4.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/bar.css">
+</head>
+<body>
+<div id="bar_chart"></div>
+<button type="button" onclick="sortBars();">Sort!</button>
+<script src="script/bar.js"></script>
+<script>
+    function sortBars(){
+
+        var x0 = x.domain(car_data.sort(function(a, b) { return b.value - a.value;})
+            .map(function(d) { return d.manufacturer; }))
+            .copy();
+
+        svg.selectAll(".bar")
+            .sort(function(a, b) { return x0(a.manufacturer) - x0(b.manufacturer); });
+        svg.selectAll(".bar")
+            .transition()
+            .delay(100)
+            .attr("transform", function(d){
+                return "translate("  + x0(d.manufacturer) + ", " +  y(d.value) + ")";});
+
+        svg.select("#xAxis")
+            .call(d3.axisBottom(x0))
+
+    };</script>
+</body>
+</html>

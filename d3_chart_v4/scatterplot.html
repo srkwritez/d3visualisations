@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>DSBA5122 d3 example</title>
+    <script src="//d3js.org/d3.v4.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/scatterplot.css">
+</head>
+<body>
+<div id="plot"></div>
+<script src="script/scatterplot.js"></script>
+<div>
+
+X-Axis:
+<select onchange="changeXAxis(this.value);">
+    <option value="Sugars">Sugars</option>
+    <option value="Calories">Calories</option>
+    <option value="Potassium" selected>Potassium</option>
+</select>
+Y-Axis:
+<select onchange="changeYAxis();" id="yAxisMenu">
+    <option value="Sugars" selected>Sugars</option>
+    <option value="Calories">Calories</option>
+    <option value="Potassium">Potassium</option>
+</select>
+</div>
+<script>
+    function changeXAxis(elem) {
+        xLabel = elem;
+        xScale.domain(d3.extent(cerealData, xValue)).nice();
+        svg.selectAll(".x.axis")
+            .call(xAxis);
+        svg.select("#x_label").text(xLabel);
+        changePos();
+    };
+
+    function changeYAxis() {
+        yLabel = document.getElementById("yAxisMenu").value;
+        // d3.select("#ylabel").text(x);
+        yScale.domain(d3.extent(cerealData, yValue)).nice();
+        svg.selectAll(".y.axis")
+            .call(yAxis);
+        svg.select("#y_label").text(yLabel);
+        changePos();
+    };
+    function changePos() {
+        svg.selectAll("circle")
+            .transition()
+            .duration(500)
+            .attr("cx", xMap)
+            .attr("cy", yMap);
+    }
+
+</script>
+</body>
+</html>
